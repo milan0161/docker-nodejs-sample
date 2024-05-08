@@ -18,7 +18,8 @@ COPY package*.json ./
 
 RUN npm ci --only=production
 
-COPY --from=dev /usr/src/app ./
+COPY --from=dev /usr/src/app/src ./src
+COPY --from=dev /usr/src/app/.env ./
 
 EXPOSE 3000
 

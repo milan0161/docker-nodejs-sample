@@ -8,7 +8,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  GITHUB_USERNAME: milan016
+  GITHUB_USERNAME: milan0161
 
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        run: docker login - ${{ secret.REGISTRY_USER }} -p ${{ secret.REGISTRY_PASSWORD }}
+        run: docker login -u ${{ secret.REGISTRY_USER }} -p ${{ secret.REGISTRY_PASSWORD }}
 
 
       - name: Build Docker mage

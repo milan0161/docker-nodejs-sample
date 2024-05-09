@@ -38,7 +38,7 @@ jobs:
 
 
       - name: Build Docker mage
-        run : docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/{{ env.IMAGE_NAME }}
+        run : docker build -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/{{ env.IMAGE_NAME }} ../
         
       - name: Push Docker Image
         run : docker push ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/{{ env.IMAGE_NAME }}:latest

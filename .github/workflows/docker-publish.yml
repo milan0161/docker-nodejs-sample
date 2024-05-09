@@ -29,11 +29,12 @@ jobs:
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        run: docker login - ${{ REGISTRY_USER }} -p ${{ REGISTRY_PASSWORD }}
+        run: docker login - ${{ secret.REGISTRY_USER }} -p ${{ secret.REGISTRY_PASSWORD }}
 
 
       - name: Build Docker mage
         run : docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/{{ env.IMAGE_NAME }}
+        
       - name: Push Docker Image
         run : docker push ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/{{ env.IMAGE_NAME }}:latest
         

@@ -2,6 +2,9 @@ name: Docker
 
 on:
  workflow_dispatch:
+ push: 
+  tags:
+   - 'v*'
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -9,12 +12,14 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   GITHUB_USERNAME: milan0161
+  TAG: ${GITHUB_REF#refs/tags/}
 
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: read
       packages: write
@@ -38,8 +43,8 @@ jobs:
 
 
       - name: Build Docker mage
-        run : docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run : docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
         
       - name: Push Docker Image
-        run : docker push ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run : docker push ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
         

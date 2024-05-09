@@ -4,11 +4,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-RUN npm run prettify
+CMD [ "npm", "run", "dev" ]
 
 FROM node:18.10.0-alpine as prod
 
@@ -19,8 +19,5 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 COPY --from=dev /usr/src/app/src ./src
-COPY --from=dev /usr/src/app/.env ./
-
-EXPOSE 3000
 
 CMD ["node","src/index.js"]

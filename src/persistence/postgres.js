@@ -1,7 +1,7 @@
 const waitPort = require('wait-port');
 const fs = require('fs');
 const { Client } = require('pg');
-require('dotenv').config();
+
 const {
     POSTGRES_HOST: HOST,
     POSTGRES_HOST_FILE: HOST_FILE,

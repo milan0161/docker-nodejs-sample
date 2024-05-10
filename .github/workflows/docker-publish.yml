@@ -3,7 +3,7 @@ name: Docker
 on:
     workflow_dispatch:
     push:
-        tags: ['[0-9].[0-9].[0-9]']
+        tags: ['[0-9]+.[0-9]+.[0-9]+']
 
 env:
     # Use docker.io for Docker Hub if empty
@@ -15,7 +15,8 @@ env:
 
 jobs:
     build:
-        if: startsWith(github.ref, 'refs/tags/') && github.ref == '^refs/tags/[0-9].[0-9].[0-9]'
+        #if: startsWith(github.ref, 'refs/tags/') && github.ref == '^refs/tags/[0-9]+\.[0-9]+\.[0-9]+$'
+        if: startsWith(github.ref, 'refs/tags/')
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -35,8 +36,14 @@ jobs:
               with:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
-                  password: ${{ secrets.REGISTRY_PASSWORD }}
-              # run: docker login -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASSWORD }}
+                  password: ${{ secrets.Action_Token }}
+              # run: docker login -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.Action_Token }}
+
+            - name: Validate tag format
+              run: |
+                  if [[ ! "${{ env.TAG }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                   echo "Tag does not match the semantic versioning pattern"
+                   exit 1
 
             - name: Build Docker mage
               run: docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}

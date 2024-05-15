@@ -62,11 +62,3 @@ module "subnet_addrs" {
     },
   ]
 }
-
-# resource "aws_subnet" "subnets" {
-#   for_each = module.subnet_addrs.network_cidr_blocks
-
-#   vpc_id            = aws_vpc.example.id
-#   availability_zone = each.key
-#   cidr_block        = each.value
-# }

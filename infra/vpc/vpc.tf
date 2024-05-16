@@ -4,16 +4,16 @@ module "vpc" {
   name = "node-app-vpc-ms"
   cidr = var.vpc-cidr-block
 
-  azs             = var.vpc-azs
+  azs             =  data.aws_availability_zones.available_azs.names
   private_subnets = [lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-C", "default")]
   public_subnets = [lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-C", "default")]
   database_subnets = [ lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-C", "default") ]
 
 
   enable_nat_gateway = true
-    single_nat_gateway = true
-    one_nat_gateway_per_az = false
-    create_igw = true
+  single_nat_gateway = true
+  one_nat_gateway_per_az = false
+  create_igw = true
   
 
   tags = var.resource_tags
@@ -61,4 +61,8 @@ module "subnet_addrs" {
       new_bits = 8
     },
   ]
+}
+
+data "aws_availability_zones" "available_azs" {
+  state = "available"
 }

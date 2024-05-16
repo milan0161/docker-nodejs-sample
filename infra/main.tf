@@ -17,3 +17,6 @@ module "aws_vpc" {
   source = "./vpc"
 }
 
+module "aws_assumable_github_role" {
+  source = "./iam"
+}

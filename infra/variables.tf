@@ -1,6 +1,6 @@
 variable "resource_tags" {
   description = "This tag will represent owner of the resources"
-  type = map(string)
+  type        = map(string)
   default = {
     "Owner" = "Milan Stanisavljevic"
   }
@@ -8,12 +8,12 @@ variable "resource_tags" {
 
 variable "profile" {
   description = "AWS profile name"
-  type = string
-  default = "Vega-Milan-s"
+  type        = string
+  default     = "Vega-Milan-s"
 }
 
 variable "region" {
   description = "AWS default region"
-  type = string
-  default = "eu-central-1"
+  type        = string
+  default     = "eu-central-1"
 }

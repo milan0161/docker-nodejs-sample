@@ -23,9 +23,8 @@ module "iam_assumable_role_with_oidc" {
   provider_url = module.iam_github_oidc_provider.url
 
   role_policy_arns = [
-    "arn:aws:iam::aws:policy/aws-service-role/ECRReplicationServiceRolePolicy",
+    "arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds"
   ]
-  number_of_role_policy_arns = 1
   
   tags = {
     Role = "role-with-oidc"

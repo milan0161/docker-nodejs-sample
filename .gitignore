@@ -2,3 +2,5 @@ node_modules/
 db/
 compose.yaml
 .env
+infra/.terraform
+infra/.terraform.lock.hcl

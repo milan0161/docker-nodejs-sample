@@ -5,7 +5,6 @@ module "iam_github_oidc_provider" {
     Owner = "Milan Stanisavljevic"
   }
 }
-
 module "iam_assumable_role_with_oidc" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
 
@@ -23,12 +22,43 @@ module "iam_assumable_role_with_oidc" {
   provider_url = module.iam_github_oidc_provider.url
 
   role_policy_arns = [
-    "arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds"
+    module.iam_policy.arn
   ]
   
   tags = {
     Role = "role-with-oidc"
     Owner = "Milan Stanisavljevic"
   }
+}
+
+
+module "iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+
+  name        = "EcrAllowPushPolicy"
+  create_policy = true
+  description = "Policy which will allow our github workflow to push image to our ecr"
+  tags = var.aws_resource_owner
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchGetImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:PutImage"
+            ],
+            "Resource": "${module.ecr.repository_arn}"
+        }
+  ]
+}
+EOF
 }
 

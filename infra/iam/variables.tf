@@ -11,3 +11,11 @@ variable "github_repo" {
     node_app_repo = "docker-nodejs-sample"
   }
 }
+
+variable "aws_policy_region" {
+  description = "AWS region name"
+}
+
+variable "aws_resource_owner" {
+  description = "Owner of the created resource"
+}

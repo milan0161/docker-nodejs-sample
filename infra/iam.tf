@@ -38,7 +38,7 @@ module "iam_policy" {
   name        = "EcrAllowPushPolicy"
   create_policy = true
   description = "Policy which will allow our github workflow to push image to our ecr"
-  tags = var.aws_resource_owner
+  tags = var.resource_tags
   policy = <<EOF
 {
   "Version": "2012-10-17",

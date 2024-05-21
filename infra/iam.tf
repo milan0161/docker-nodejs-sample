@@ -22,7 +22,8 @@ module "iam_assumable_role_with_oidc" {
   provider_url = module.iam_github_oidc_provider.url
 
   role_policy_arns = [
-    module.iam_policy.arn
+    module.iam_policy.arn,
+    aws_iam_policy.allow_deploy_eks_policy.arn
   ]
   
   tags = {
@@ -32,7 +33,7 @@ module "iam_assumable_role_with_oidc" {
 }
 
 
-module "iam_policy" {
+module "iam_policy"{
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
 
   name        = "EcrAllowPushPolicy"
@@ -61,4 +62,29 @@ module "iam_policy" {
 }
 EOF
 }
+resource "aws_iam_policy" "allow_deploy_eks_policy" {
+  name        = "AllowDeployToEksPolicy"
+  path        = "/"
+  description = "This policy will allow GitHub actions to deploy to Eks"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "eks:DescribeCluster",
+                "eks:DescribeNodegroup",
+                "eks:ListClusters",
+                "eks:ListNodegroups"
+            ],
+            "Resource": "${module.eks.cluster_arn}"
+        }
+    ]
+})
+}
+
+
 

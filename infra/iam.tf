@@ -23,7 +23,6 @@ module "iam_assumable_role_with_oidc" {
 
   role_policy_arns = [
     module.iam_policy.arn,
-    aws_iam_policy.allow_deploy_eks_policy.arn
   ]
   
   tags = {
@@ -57,21 +56,7 @@ module "iam_policy"{
                 "ecr:PutImage"
             ],
             "Resource": "${module.ecr.repository_arn}"
-        }
-  ]
-}
-EOF
-}
-resource "aws_iam_policy" "allow_deploy_eks_policy" {
-  name        = "AllowDeployToEksPolicy"
-  path        = "/"
-  description = "This policy will allow GitHub actions to deploy to Eks"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+        },
         {
             "Effect": "Allow",
             "Action": [
@@ -82,9 +67,7 @@ resource "aws_iam_policy" "allow_deploy_eks_policy" {
             ],
             "Resource": "${module.eks.cluster_arn}"
         }
-    ]
-})
+  ]
 }
-
-
-
+EOF
+}

@@ -38,3 +38,9 @@ variable "github_repo" {
     node_app_repo = "docker-nodejs-sample"
   }
 }
+
+variable "lambda_domain_name" {
+  type = string
+  description = "The domain name"
+  default = "lambda.devops.sitesstage.com"
+}

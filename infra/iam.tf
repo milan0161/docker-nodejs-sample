@@ -82,7 +82,7 @@ module "iam_eks_role" {
   oidc_providers = {
     eks = {
       provider_arn               = "${module.eks.oidc_provider_arn}"
-      namespace_service_accounts = ["default:service_account"]
+      namespace_service_accounts = ["${var.k8s_namespace}:${var.eks_service_account_name}"]
     }
   }
   tags = var.resource_tags

@@ -8,7 +8,13 @@ module "vpc" {
   private_subnets = [lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-private-C", "default")]
   public_subnets = [lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-public-C", "default")]
   database_subnets = [ lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-A", "default"),lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-B", "default"), lookup(module.subnet_addrs.network_cidr_blocks, "sn-eu-db-C", "default") ]
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
 
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
 
   enable_nat_gateway = true
   single_nat_gateway = true

@@ -15,7 +15,7 @@ resource "helm_release" "alb_controler" {
   name = "load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   version = "1.7.2"
-  namespace = var.k8s_namespace
+  namespace = "alb"
   create_namespace = true
   chart = "aws-load-balancer-controller"
 
@@ -33,7 +33,7 @@ resource "helm_release" "alb_controler" {
   }
   set {
     name = "serviceAccount.name"
-    value = var.eks_service_account_name
+    value = "alb-controller"
   }
   set {
     name = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
@@ -51,4 +51,43 @@ resource "helm_release" "alb_controler" {
     name = "replicaCount"
     value = 1
  }
+}
+
+resource "helm_release" "pgsql" {
+  name = "postgresql"
+  create_namespace = true
+  namespace = "vegait-training"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart = "postgresql"
+  version = 15.4
+
+  set {
+    name = "auth.database"
+    value = lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_DB", "default")
+  }
+  set {
+    name = "auth.username"
+    value = lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_USER", "default")
+  }
+  set {
+    name = "auth.password"
+    value = lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_PASSWORD", "default")
+
+  }
+  set {
+    name = "primary.persistence.size"
+    value = "8Gi"
+   }
+   set {
+     name = "primary.persistence.storageClass"
+     value = kubernetes_storage_class.storage_class.metadata[0].name
+   }
+  set {
+    name = "primary.persistence.volumeName"
+    value = "psql-persistence-volume"
+  }
+  set {
+    name = "serviceAccount.create"
+    value = false
+  }
 }

@@ -13,7 +13,13 @@ module "eks" {
 
   vpc_id  =  module.vpc.vpc_id
   subnet_ids  = module.vpc.private_subnets
-
+  cluster_addons = {
+    aws-ebs-csi-driver = {
+      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
+      addon_version = "v1.30.0-eksbuild.1"
+      resolve_conflicts = "PRESERVE"
+    }
+  }
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     milan-s-node-group = {
@@ -35,6 +41,19 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
   tags = var.resource_tags
 }
+data "aws_eks_cluster_auth" "cluster_auth" {
+  name =  module.eks.cluster_name
+}
 
-
-
+resource "kubernetes_storage_class" "storage_class" {
+  metadata {
+    name = "psql-storage-class"
+  }
+  depends_on = [ module.eks ]
+  storage_provisioner = "ebs.csi.aws.com"
+  allow_volume_expansion = true
+  volume_binding_mode = "WaitForFirstConsumer"
+  parameters = {
+    "encrypted" = "true"
+  }
+}

@@ -44,15 +44,3 @@ variable "lambda_domain_name" {
   description = "The domain name"
   default = "lambda.devops.sitesstage.com"
 }
-
-variable "k8s_namespace" {
-  type = string
-  description = "Kubernetes namespace"
-  default = "alb"
-}
-
-variable "eks_service_account_name" {
-  type = string
-  description = "Eks service account name for iam"
-  default = "alb-controller"
-}

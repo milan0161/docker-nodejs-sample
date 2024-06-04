@@ -28,6 +28,10 @@ resource "helm_release" "alb_controler" {
     value = var.region
   }
   set {
+    name = "defaultTargetType"
+    value = "ip"
+  }
+  set {
     name = "serviceAccount.create"
     value = true
   }

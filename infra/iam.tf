@@ -82,8 +82,22 @@ module "iam_eks_role" {
   oidc_providers = {
     eks = {
       provider_arn               = "${module.eks.oidc_provider_arn}"
-      namespace_service_accounts = ["${var.k8s_namespace}:${var.eks_service_account_name}"]
+      namespace_service_accounts = ["alb:alb-controller"]
     }
   }
   tags = var.resource_tags
+}
+
+module "ebs_csi_irsa_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name = "csi-irsa-role-milan"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
 }

@@ -2,7 +2,7 @@ module "secrets_manager" {
   source = "terraform-aws-modules/secrets-manager/aws"
 
   description = "Create secret manager service"
-  name = "secret-manager-service"
+  name = "milan-secrets"
   ignore_secret_changes = true
 
   secret_string = jsonencode({

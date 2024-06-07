@@ -1,0 +1,21 @@
+app:
+    port:
+    replicas:
+
+ingress:
+    host:
+    class:
+
+secret:
+    postgres_user:
+    postgres_password:
+    postgres_db_name:
+
+config:
+    hostname:
+    secret:
+
+container:
+    containerName:
+    image:
+    tag:

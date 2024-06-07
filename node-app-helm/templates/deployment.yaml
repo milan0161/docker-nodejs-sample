@@ -5,7 +5,7 @@ metadata:
   labels:
     app: node-app
 spec:
-  replicas: 1
+  replicas: {{ .Values.app.replicas }}
   selector:
     matchLabels:
       app: node-app
@@ -14,8 +14,15 @@ spec:
       labels:
         app: node-app
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.config.secret }}
       containers:
-      - name: {{ .Values.ContainerName}}
-        image: {{ .Values.Image}}
+      - name: {{ .Values.container.containerName }}
+        image: "{{ .Values.container.image }}:{{ .Values.container.tag }}"
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.app.port }}
+      envFrom:
+      - configMapRef:
+        name: {{ .Release.Name }}-configMap
+      - secretRef:
+        name: {{ .Release.Name }}-secret

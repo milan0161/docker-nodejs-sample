@@ -109,7 +109,7 @@ resource "helm_release" "node-app-helm" {
   namespace = "vegait-training"
   chart = "node-app-repo"
   create_namespace = false
-  version = "0.1.3"
+  version = "0.1.7"
 
   set {
     name = "app.port"
@@ -166,5 +166,10 @@ resource "helm_release" "node-app-helm" {
   set {
     name = "config.secret"
     value = "regcred"
+  }
+
+  set {
+    name = "defaultTag.albselector"
+    value = var.alb_tag_selector
   }
 }

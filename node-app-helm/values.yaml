@@ -21,3 +21,6 @@ container:
     containerName:
     image:
     tag:
+
+defaultTag:
+    albselector:

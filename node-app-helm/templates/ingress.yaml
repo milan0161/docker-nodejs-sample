@@ -8,6 +8,7 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/inbound-cidrs: "80.93.252.50/32"
+    alb.ingress.kubernetes.io/tags: "albselector={{ .Values.defaultTag.albselector }}"
 spec:
   ingressClassName: {{ .Values.ingress.class }}
   rules: 

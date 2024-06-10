@@ -31,5 +31,7 @@ resource "aws_route53_record" "node-app" {
 
 data "aws_lb" "alb" {
   depends_on = [helm_release.node-app-helm]
-  name = "k8s-vegaittr-nodeappr-3ec102966d"
+  tags = {
+    "albselector" = var.alb_tag_selector
+  }
 }

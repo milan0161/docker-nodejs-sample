@@ -44,3 +44,9 @@ variable "lambda_domain_name" {
   description = "The domain name"
   default = "lambda.devops.sitesstage.com"
 }
+
+variable "alb_tag_selector" {
+  type = string
+  description = "Alb tag selector"
+  default = "alb"
+}

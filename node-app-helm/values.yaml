@@ -1,6 +1,7 @@
 app:
     port:
     replicas:
+    label:
 
 ingress:
     host:
@@ -14,8 +15,12 @@ secret:
 config:
     hostname:
     secret:
+    pg_port:
 
 container:
     containerName:
     image:
     tag:
+
+defaultTag:
+    albselector:

@@ -24,3 +24,5 @@ module "ecr" {
 
   tags = var.resource_tags
 }
+data "aws_ecr_authorization_token" "token" {
+}

@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
-  label: node-app-config-map
+  labels: 
+    app: {{ .Values.app.label }}
 data:
   POSTGRES_HOST: {{ .Values.config.hostname }}
+  POSTGRES_PORT: "{{ .Values.config.pg_port }}"

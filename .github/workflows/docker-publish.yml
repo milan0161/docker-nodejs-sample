@@ -31,13 +31,17 @@ jobs:
               with:
                   role-to-assume: ${{env.ASSUMABLE_ROLE}}
                   aws-region: ${{env.AWS_REGION}}
+                  mask-aws-account-id: 'true'
 
             - name: Login to Amazon ECR
               id: login-ecr
               uses: aws-actions/amazon-ecr-login@v2
+              with:
+                  registries: ${{ secrets.ACCOUNT_ID }}
+                  mask-password: 'true'
 
             - name: Build Docker mage
-              run: docker build . -t ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+              run: docker build . -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             - name: Push Docker Image
-              run: docker push ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+              run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

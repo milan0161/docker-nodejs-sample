@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: node-app
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.config.secret }}
+      containers:
+      - name: {{ .Values.container.containerName }}
+        image: "{{ .Values.container.image }}:{{ .Values.container.tag }}"
+        ports:
+        - containerPort: {{ .Values.app.port }}
+      envFrom:
+      - configMapRef:
+        name: {{ .Release.Name }}-configMap
+      - secretRef:
+        name: {{ .Release.Name }}-secret

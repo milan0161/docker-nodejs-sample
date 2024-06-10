@@ -95,3 +95,56 @@ resource "helm_release" "pgsql" {
     value = false
   }
 }
+
+//This is commented because it should be configure in next step.
+# resource "helm_release" "node-app-helm" {
+#   name = "node-app-helm"
+#   chart = "../node-app-helm"
+#   namespace = "vegait-training"
+#   create_namespace = false
+
+#   set {
+#     name = "app.port"
+#     value = 3000
+#   }
+
+#   set {
+#     name = "app.replicas"
+#     value = 1
+#   }
+#   set {
+#     name = "secret_postgres_user"
+#     value = base64encode(lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_USER", "default"))
+#   }
+
+#   set {
+#     name = "secret.postgres_password"
+#     value = base64encode(lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_PASSWORD", "default"))
+#   }
+#    set {
+#     name = "secret.postgres_db_name"
+#     value = base64encode(lookup(jsondecode(sensitive(data.aws_secretsmanager_secret_version.secret-version.secret_string)), "POSTGRES_DB", "default"))
+#   }
+#   set {
+#     name = "config.hostname"
+#     value = "postgresql"
+#   }
+
+#   set {
+#     name = "container.containerName"
+#     value = "node-app"
+#   }
+
+#   set {
+#     name = "container.image"
+#     value = "${module.ecr.repository_url}:1.1.3"
+#   }
+#    set {
+#     name = "ingress.host"
+#     value = "milan-stanisavljevic.${var.lambda_domain_name}"
+#   }
+#   set {
+#     name =  "ingress.class"
+#     value = "alb"
+#   }
+# }

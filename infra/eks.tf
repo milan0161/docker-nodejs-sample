@@ -63,3 +63,4 @@ resource "kubernetes_storage_class" "storage_class" {
     "encrypted" = "true"
   }
 }
+

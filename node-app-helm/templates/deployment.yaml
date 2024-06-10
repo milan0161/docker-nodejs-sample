@@ -2,17 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
-  labels:
-    app: node-app
 spec:
   replicas: {{ .Values.app.replicas }}
   selector:
     matchLabels:
-      app: node-app
+      app: {{ .Values.app.label }}
   template:
     metadata:
       labels:
-        app: node-app
+        app: {{ .Values.app.label }}
     spec:
       imagePullSecrets:
         - name: {{ .Values.config.secret }}
@@ -21,8 +19,8 @@ spec:
         image: "{{ .Values.container.image }}:{{ .Values.container.tag }}"
         ports:
         - containerPort: {{ .Values.app.port }}
-      envFrom:
-      - configMapRef:
-        name: {{ .Release.Name }}-configMap
-      - secretRef:
-        name: {{ .Release.Name }}-secret
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        - secretRef:
+            name: {{ .Release.Name }}-secret

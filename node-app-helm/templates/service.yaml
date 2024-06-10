@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-service
   labels:
-    app: node-app-service
+    app: {{ .Values.app.label }}
 spec:
   selector: 
     app: node-app
@@ -11,5 +11,5 @@ spec:
     - port: 443
       name: https
       protocol: TCP
-      targetPort: 3000
+      targetPort: {{ .Values.app.port }}
 

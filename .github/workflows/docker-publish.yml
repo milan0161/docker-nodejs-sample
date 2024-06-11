@@ -7,7 +7,6 @@ on:
 
 env:
     # Use docker.io for Docker Hub if empty
-    GITHUB_USERNAME: milan016
     REGISTRY: node-app-repo
     IMAGE_NAME: ${{ github.repository }}
     ASSUMABLE_ROLE: ${{ secrets.ASSUMABLE_ROLE }}
@@ -37,7 +36,6 @@ jobs:
               id: login-ecr
               uses: aws-actions/amazon-ecr-login@v2
               with:
-                  registries: ${{ secrets.ACCOUNT_ID }}
                   mask-password: 'true'
 
             - name: Build Docker mage

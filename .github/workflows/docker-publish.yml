@@ -55,4 +55,4 @@ jobs:
             - name: Upgrade helm chart
               run: |
                   aws eks update-kubeconfig --region ${{env.AWS_REGION}} --name ${{ env.CLUSTER}}
-                  helm upgrade --reuse-values --set "container.tag"="docker-${{env.IMAGE_TAG}}" --namespace vegait-training node-app-repo ${{ env.CLUSTER}} oci://${{steps.login-ecr.outputs.registry}}/${{env.REPOSITORY}}
+                  helm upgrade --reuse-values --set "container.tag"="docker-${{env.IMAGE_TAG}}" --namespace vegait-training ${{ env.REPOSITORY }} oci://${{steps.login-ecr.outputs.registry}}/${{env.REPOSITORY}}

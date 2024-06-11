@@ -149,11 +149,11 @@ resource "helm_release" "node-app-helm" {
 
   set {
     name = "container.image"
-    value = "ghcr.io/milan0161/milan0161/docker-nodejs-sample"
+    value = module.ecr.repository_url
   }
   set{
     name = "container.tag"
-    value = "1.1.3"
+    value = "docker-1.1.8"
   }
    set {
     name = "ingress.host"
@@ -163,10 +163,10 @@ resource "helm_release" "node-app-helm" {
     name =  "ingress.class"
     value = "alb"
   }
-  set {
-    name = "config.secret"
-    value = "regcred"
-  }
+  # set {
+  #   name = "config.secret"
+  #   value = "regcred"
+  # }
 
   set {
     name = "defaultTag.albselector"

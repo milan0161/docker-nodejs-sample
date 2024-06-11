@@ -109,7 +109,7 @@ resource "helm_release" "node-app-helm" {
   namespace = "vegait-training"
   chart = "node-app-repo"
   create_namespace = false
-  version = "0.1.7"
+  version = "0.1.8"
 
   set {
     name = "app.port"
@@ -153,7 +153,7 @@ resource "helm_release" "node-app-helm" {
   }
   set{
     name = "container.tag"
-    value = "docker-1.1.8"
+    value = "docker-1.2.5"
   }
    set {
     name = "ingress.host"
@@ -163,10 +163,10 @@ resource "helm_release" "node-app-helm" {
     name =  "ingress.class"
     value = "alb"
   }
-  set {
-    name = "config.secret"
-    value = "regcred"
-  }
+  # set {
+  #   name = "config.secret"
+  #   value = "regcred"
+  # }
 
   set {
     name = "defaultTag.albselector"

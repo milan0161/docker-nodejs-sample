@@ -13,8 +13,8 @@ on:
 env:
     # Use docker.io for Docker Hub if empty
     REPOSITORY: node-app-repo
-    IMAGE_TAG: ${{ inputs.tag }}
-    IMAGE_NAME: ${{ github.repository || github.ref.tags }}
+    IMAGE_TAG: ${{ inputs.tag || github.refs.tags}}
+    IMAGE_NAME: ${{ github.repository}}
     ASSUMABLE_ROLE: ${{ secrets.ASSUMABLE_ROLE }}
     AWS_REGION: eu-central-1
 

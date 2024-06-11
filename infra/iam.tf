@@ -46,7 +46,6 @@ module "iam_policy"{
         {
             "Effect": "Allow",
             "Action": [
-                "ecr:GetAuthorizationToken",
                 "ecr:BatchGetImage",
                 "ecr:InitiateLayerUpload",
                 "ecr:UploadLayerPart",
@@ -55,7 +54,12 @@ module "iam_policy"{
                 "ecr:GetDownloadUrlForLayer",
                 "ecr:PutImage"
             ],
-          "Resource": "*"
+          "Resource": "${module.ecr.repository_arn}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
         },
         {
             "Effect": "Allow",

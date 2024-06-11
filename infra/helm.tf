@@ -163,10 +163,10 @@ resource "helm_release" "node-app-helm" {
     name =  "ingress.class"
     value = "alb"
   }
-  # set {
-  #   name = "config.secret"
-  #   value = "regcred"
-  # }
+  set {
+    name = "config.secret"
+    value = "regcred"
+  }
 
   set {
     name = "defaultTag.albselector"

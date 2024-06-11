@@ -55,7 +55,7 @@ module "iam_policy"{
                 "ecr:GetDownloadUrlForLayer",
                 "ecr:PutImage"
             ],
-            "Resource": "${module.ecr.repository_arn}"
+          "Resource": "*"
         },
         {
             "Effect": "Allow",
@@ -101,3 +101,7 @@ module "ebs_csi_irsa_role" {
     }
   }
 }
+
+
+
+#   "Resource": "${module.ecr.repository_arn}"

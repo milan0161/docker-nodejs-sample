@@ -7,7 +7,7 @@ on:
 
 env:
     # Use docker.io for Docker Hub if empty
-    REGISTRY: node-app-repo
+    REPOSITORY: node-app-repo
     IMAGE_NAME: ${{ github.repository }}
     ASSUMABLE_ROLE: ${{ secrets.ASSUMABLE_ROLE }}
     AWS_REGION: eu-central-1
@@ -38,8 +38,15 @@ jobs:
               with:
                   mask-password: 'true'
 
-            - name: Build Docker mage
-              run: docker build . -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            - name: Build and push Docker image
+              uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+              with:
+                  context: .
+                  push: true
+                  tags: ${{ steps.login-ecr.outputs.registry}}/${{ env.REPOSITORY }}:docker-lastest
 
-            - name: Push Docker Image
-              run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            # - name: Build Docker mage
+            #   run: docker build . -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+            # - name: Push Docker Image
+            #   run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

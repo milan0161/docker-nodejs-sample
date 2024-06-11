@@ -13,7 +13,8 @@ module "eks" {
 
   cluster_endpoint_public_access  = true
   #Ovo je public endpoint
-  cluster_endpoint_public_access_cidrs = ["80.93.252.50/32"]
+  # cluster_endpoint_public_access_cidrs = ["80.93.252.50/32"]
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
   #Cluster private endpoint access
   cluster_endpoint_private_access = true
 
@@ -26,6 +27,22 @@ module "eks" {
       resolve_conflicts = "PRESERVE"
     }
   }
+  access_entries = {
+    github = {
+      principal_arn=module.iam_assumable_role_with_oidc.iam_role_arn
+
+      policy_associations = {
+        github = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+          access_scope = {
+            namespaces = ["vegait-training"]
+            type = "namespace"
+          }
+        }
+      }
+    }
+  }
+
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     milan-s-node-group = {

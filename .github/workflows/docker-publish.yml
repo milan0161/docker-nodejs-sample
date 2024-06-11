@@ -13,6 +13,7 @@ on:
 env:
     # Use docker.io for Docker Hub if empty
     REPOSITORY: node-app-repo
+    CLUSTER: milan-s-cluster
     IMAGE_TAG: ${{ inputs.tag || (github.event_name == 'push' && github.ref_name)}}
     IMAGE_NAME: ${{ github.repository}}
     ASSUMABLE_ROLE: ${{ secrets.ASSUMABLE_ROLE }}
@@ -50,3 +51,8 @@ jobs:
                   context: .
                   push: true
                   tags: ${{ steps.login-ecr.outputs.registry}}/${{ env.REPOSITORY }}:docker-${{ env.IMAGE_TAG}}
+
+            - name: Upgrade helm chart
+              run: |
+                  aws eks update-kubeconfig --region ${{env.AWS_REGION}} --name ${{ env.CLUSTER}}
+                  helm upgrade --reuse-values --set "container.tag"="docker-${{env.IMAGE_TAG}}" --namespace vegait-training ${{ env.REPOSITORY }} oci://${{steps.login-ecr.outputs.registry}}/${{env.REPOSITORY}}

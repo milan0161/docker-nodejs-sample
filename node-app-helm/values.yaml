@@ -14,7 +14,6 @@ secret:
 
 config:
     hostname:
-    secret:
     pg_port:
 
 container:

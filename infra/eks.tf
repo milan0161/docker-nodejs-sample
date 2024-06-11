@@ -13,7 +13,8 @@ module "eks" {
 
   cluster_endpoint_public_access  = true
   #Ovo je public endpoint
-  cluster_endpoint_public_access_cidrs = ["80.93.252.50/32"]
+  # cluster_endpoint_public_access_cidrs = ["80.93.252.50/32"]
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
   #Cluster private endpoint access
   cluster_endpoint_private_access = true
 
